@@ -75,14 +75,14 @@ export const antdTheme: ThemeConfig = {
       activeBarBorderWidth: 3,
       itemBorderRadius: 6,
       /*
-        [responsive] Nén menu ngang để 6 mục vẫn vừa ở đúng breakpoint tablet.
-        Số đo thực tế: 6 mục với padding mặc định (16px/bên) + font 16px cần ~469px,
-        mà dải giữa ở 768px chỉ còn ~415px (đã trừ logo + nút CTA) -> antd sẽ gom
-        mục cuối vào nút overflow. Font 15px + padding 12px còn ~396px, vừa an toàn.
-        Đây cũng đúng cỡ chữ 0.95rem của bản CSS cũ.
+        [responsive] Cỡ chữ menu: 16px (tăng từ 15px theo yêu cầu — chữ to lên
+        một chút). Bù lại giảm itemPaddingInline 12 -> 10 để 6 mục vẫn vừa ở
+        breakpoint tablet: 6 mục font 16px cần ~392px (text ~272px + padding
+        6x20px), mà dải giữa ở 768px còn ~415px (đã trừ logo + nút CTA) — an toàn,
+        không bị gom mục cuối vào nút overflow.
       */
-      fontSize: 15,
-      itemPaddingInline: 12,
+      fontSize: 16,
+      itemPaddingInline: 10,
     },
     Button: {
       primaryColor: palette.accentInk, // chữ tối trên nền cyan (antd mặc định là chữ trắng)

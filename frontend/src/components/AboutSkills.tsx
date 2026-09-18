@@ -104,7 +104,7 @@ const SKILL_GROUPS: SkillGroup[] = [
     key: "Cloud & Tools",
     skills: [
       { name: "AWS", Icon: FaAws as IconType, percent: 50 },
-      { name: "PostgreSQL", Icon: SiPostgresql, percent: 59, dot: true },
+      { name: "PostgreSQL", Icon: SiPostgresql, percent: 59 },
       { name: "Git", Icon: SiGit, percent: 57 },
     ],
   },

@@ -14,11 +14,9 @@ export type Skill = {
   name: string;
   Icon: IconType;
   percent: number;
-  /** Chấm glow ở đầu thanh (theo thiết kế ở cột PostgreSQL). */
-  dot?: boolean;
 };
 
-export default function SkillBar({ name, Icon, percent, dot = false }: Skill) {
+export default function SkillBar({ name, Icon, percent }: Skill) {
   return (
     <div style={{ position: "relative" }}>
       {/* Hàng trên: icon + tên trái, số % phải */}
@@ -48,23 +46,6 @@ export default function SkillBar({ name, Icon, percent, dot = false }: Skill) {
         className="skillbar-progress"
       />
 
-      {/* Chấm glow tại đầu thanh — trang trí thuần, không mang nội dung */}
-      {dot && (
-        <span
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            left: `calc(${percent}% - 5px)`,
-            bottom: -1,
-            width: 10,
-            height: 10,
-            borderRadius: "50%",
-            background: palette.accent,
-            boxShadow: `0 0 10px ${palette.accent}, 0 0 18px rgba(34, 211, 238, 0.6)`,
-            pointerEvents: "none",
-          }}
-        />
-      )}
     </div>
   );
 }

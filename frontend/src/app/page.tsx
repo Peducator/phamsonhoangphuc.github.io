@@ -4,7 +4,6 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import AboutSkills from "@/components/AboutSkills";
 import ContactFooter from "@/components/ContactFooter";
-import Footer from "@/components/Footer";
 
 const PORTRAIT_FILE = "hero-character.png";
 
@@ -25,7 +24,6 @@ export default function Home() {
         <AboutSkills />
         <ContactFooter />
       </main>
-      <Footer />
     </>
   );
 }

@@ -34,8 +34,7 @@ export default function Footer() {
             fontSize: 14,
           }}
         >
-          © {new Date().getFullYear()} Hoang Phuc · Built with Next.js &amp;
-          Ant Design
+          © {new Date().getFullYear()} Pham Son Hoang Phuc
         </Typography.Text>
       </Container>
     </Layout.Footer>

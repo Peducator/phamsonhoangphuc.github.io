@@ -1,0 +1,255 @@
+"use client";
+
+import Image from "next/image";
+import { Button, Col, Flex, Row, Tag, Typography } from "antd";
+import { DownloadOutlined, ExportOutlined } from "@ant-design/icons";
+import TechStack from "./TechStack";
+import Container from "./Container";
+import { palette } from "@/theme";
+
+const PORTRAIT_FILE = "hero-character.png";
+
+/** antd không có icon 4 cánh kiểu sparkle nên giữ SVG nội tuyến nhỏ này. */
+function Sparkle() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      style={{
+        position: "absolute",
+        right: "2%",
+        bottom: "14%",
+        width: "clamp(22px, 3vw, 34px)",
+        height: "clamp(22px, 3vw, 34px)",
+        color: "#fff",
+        opacity: 0.4,
+      }}
+    >
+      <path d="M12 0c.62 6.2 5.18 10.76 11.38 11.38v1.24C17.18 13.24 12.62 17.8 12 24c-.62-6.2-5.18-10.76-11.38-11.38v-1.24C6.82 10.76 11.38 6.2 12 0Z" />
+    </svg>
+  );
+}
+
+export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
+  return (
+    <section id="home" style={{ position: "relative", overflow: "hidden" }}>
+      {/* Vệt sáng cyan sau hero — hiệu ứng antd không có token nên giữ bằng inline style */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          top: -220,
+          right: -140,
+          width: 720,
+          height: 720,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(34,211,238,0.16) 0%, rgba(34,211,238,0.05) 45%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      <Container>
+        <Row
+          align="middle"
+          // [responsive] gutter [dọc, ngang]: khoảng cách 48px ở desktop, antd tự giảm trên mobile
+          gutter={[48, 48]}
+          style={{
+            paddingBlock: "clamp(32px, 6vw, 56px) clamp(48px, 8vw, 88px)",
+          }}
+        >
+          {/* ===== CỘT NỘI DUNG =====
+              [responsive] xs/sm = 24 (một cột, nằm trên) — md trở lên = 13/24 như thiết kế desktop */}
+          <Col xs={24} sm={24} md={13}>
+            <Flex vertical align="flex-start" gap={26}>
+              {/* Badge: div + CSS cũ -> antd Tag */}
+              <Tag
+                style={{
+                  margin: 0,
+                  paddingBlock: 8,
+                  paddingInline: 18,
+                  borderRadius: 999,
+                  borderColor: palette.borderStrong,
+                  // [responsive] đúng ràng buộc "không chữ nào dưới 14px"
+                  fontSize: 14,
+                  lineHeight: 1.6,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Full-Stack Dev | Cloud &amp; Infra
+              </Tag>
+
+              {/* Tiêu đề: h1 thuần -> Typography.Title
+                  [responsive] clamp: mobile 30px -> tablet ~40px -> desktop 49.6px (giữ nguyên,
+                  không dùng media query nên không bị nháy khi tải trang) */}
+              <Typography.Title
+                level={1}
+                style={{
+                  fontSize: "clamp(1.875rem, 5.2vw, 3.1rem)",
+                  fontWeight: 700,
+                  lineHeight: 1.13,
+                  letterSpacing: "-0.025em",
+                  margin: 0,
+                }}
+              >
+                Hi, I&apos;m{" "}
+                <span
+                  style={{
+                    color: palette.accent,
+                    textShadow: "0 0 34px rgba(34, 211, 238, 0.35)",
+                  }}
+                >
+                  Hoang Phuc
+                </span>
+                <br />
+                I build and deploy things for the web.
+              </Typography.Title>
+
+              {/* Đoạn mô tả: p thuần -> Typography.Paragraph */}
+              <Typography.Paragraph
+                style={{
+                  maxWidth: "32rem",
+                  margin: 0,
+                  fontSize: "clamp(1rem, 1.5vw, 1.06rem)",
+                  lineHeight: 1.65,
+                  color: palette.textMuted,
+                }}
+              >
+                I build and deploy things for the web, and care about the whole
+                path — from a clean interface to the infrastructure it runs on.
+              </Typography.Paragraph>
+
+              {/* ===== CTA =====
+                  [responsive] Dùng Row/Col của antd thay cho flex-wrap:
+                  xs = 24/24 -> mỗi nút chiếm cả hàng, xếp dọc, full width trên mobile
+                  md = 12/24 -> nằm cạnh nhau từ 768px trở lên (tablet/desktop)
+                  Cách này cắt đúng mốc 768px; nếu chỉ dùng flex-basis thì 2 nút vẫn
+                  nằm cạnh nhau ở các máy 400-767px. */}
+              <Row gutter={[16, 16]} style={{ width: "100%" }}>
+                <Col xs={24} md={12}>
+                  <Button
+                    type="primary"
+                    size="large"
+                    block
+                    href="#projects"
+                    icon={<ExportOutlined />}
+                    iconPlacement="end" // antd 6: `iconPosition` đã bị deprecate
+                    style={{ minHeight: 48, height: "auto", paddingBlock: 13 }}
+                  >
+                    View My Work
+                  </Button>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Button
+                    size="large"
+                    block
+                    href="/cv.pdf"
+                    icon={<DownloadOutlined />}
+                    iconPlacement="end"
+                    style={{ minHeight: 48, height: "auto", paddingBlock: 13 }}
+                  >
+                    Download CV
+                  </Button>
+                </Col>
+              </Row>
+
+              <TechStack />
+            </Flex>
+          </Col>
+
+          {/* ===== CỘT MINH HOẠ =====
+              [responsive] xs/sm = 24 và căn giữa -> ảnh xuống dưới phần chữ, canh giữa;
+              md trở lên = 11/24 nằm bên phải như cũ */}
+          <Col
+            xs={24}
+            sm={24}
+            md={11}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <div
+              style={{
+                position: "relative",
+                display: "grid",
+                placeItems: "center",
+                // [responsive] co lại theo bề rộng cột, không bao giờ tràn ngang
+                width: "100%",
+                maxWidth: "min(100%, 470px)",
+                minHeight: "clamp(300px, 44vw, 520px)",
+              }}
+            >
+              {/* Vòng tròn glow neon — hiệu ứng antd không hỗ trợ */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  width: "min(100%, 440px)",
+                  aspectRatio: "1",
+                  borderRadius: "50%",
+                  border: "2px solid rgba(34, 211, 238, 0.85)",
+                  boxShadow:
+                    "0 0 70px rgba(34,211,238,0.35), inset 0 0 90px rgba(34,211,238,0.14)",
+                }}
+              />
+
+              {hasPortrait ? (
+                <Image
+                  src={`/${PORTRAIT_FILE}`}
+                  alt="Illustration of Hoang Phuc working on a laptop"
+                  width={640}
+                  height={640}
+                  priority
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    filter: "drop-shadow(0 30px 50px rgba(0,0,0,0.55))",
+                    position: "relative",
+                    zIndex: 2,
+                  }}
+                />
+              ) : (
+                <div
+                  style={{
+                    display: "grid",
+                    placeItems: "center",
+                    gap: 10,
+                    width: "min(78%, 360px)",
+                    aspectRatio: "1",
+                    padding: 24,
+                    border: `1px dashed ${palette.borderStrong}`,
+                    borderRadius: "50%",
+                    textAlign: "center",
+                    color: palette.textMuted,
+                    fontSize: 14, // [responsive] không nhỏ hơn 14px
+                    lineHeight: 1.6,
+                  }}
+                >
+                  <span>
+                    Đặt ảnh nhân vật 3D vào
+                    <br />
+                    <code
+                      style={{
+                        fontFamily: "var(--font-geist-mono), monospace",
+                        color: palette.accent,
+                      }}
+                    >
+                      public/{PORTRAIT_FILE}
+                    </code>
+                  </span>
+                </div>
+              )}
+
+              {/*
+                Card JSON nổi trên minh hoạ đã bỏ theo yêu cầu: card đặt absolute đè
+                lên vùng ảnh nên rất dễ méo/che nội dung khi bề rộng cột đổi.
+                Phần trang trí còn lại: vòng glow, ảnh nhân vật, sparkle.
+              */}
+              <Sparkle />
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </section>
+  );
+}

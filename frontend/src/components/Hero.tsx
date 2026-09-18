@@ -9,28 +9,6 @@ import { palette } from "@/theme";
 
 const PORTRAIT_FILE = "hero-character.png";
 
-/** antd không có icon 4 cánh kiểu sparkle nên giữ SVG nội tuyến nhỏ này. */
-function Sparkle() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      style={{
-        position: "absolute",
-        right: "2%",
-        bottom: "14%",
-        width: "clamp(22px, 3vw, 34px)",
-        height: "clamp(22px, 3vw, 34px)",
-        color: "#fff",
-        opacity: 0.4,
-      }}
-    >
-      <path d="M12 0c.62 6.2 5.18 10.76 11.38 11.38v1.24C17.18 13.24 12.62 17.8 12 24c-.62-6.2-5.18-10.76-11.38-11.38v-1.24C6.82 10.76 11.38 6.2 12 0Z" />
-    </svg>
-  );
-}
-
 export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
   return (
     <section id="home" style={{ position: "relative", overflow: "hidden" }}>
@@ -243,9 +221,8 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
               {/*
                 Card JSON nổi trên minh hoạ đã bỏ theo yêu cầu: card đặt absolute đè
                 lên vùng ảnh nên rất dễ méo/che nội dung khi bề rộng cột đổi.
-                Phần trang trí còn lại: vòng glow, ảnh nhân vật, sparkle.
+                Phần trang trí còn lại: vòng glow + ảnh nhân vật.
               */}
-              <Sparkle />
             </div>
           </Col>
         </Row>

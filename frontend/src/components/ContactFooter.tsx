@@ -130,33 +130,6 @@ function ContactRow({
   );
 }
 
-/**
- * Ngôi sao 4 cánh trang trí góc phải-dưới — cùng SVG với Sparkle của Hero
- * nhưng màu accent + glow cyan theo thiết kế. Đặt absolute trong vùng
- * padding đáy của section (nên không đè lên nội dung), thuần trang trí.
- */
-function Star() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      style={{
-        position: "absolute",
-        right: "clamp(20px, 5vw, 72px)",
-        bottom: 28,
-        width: "clamp(20px, 2.6vw, 30px)",
-        height: "clamp(20px, 2.6vw, 30px)",
-        color: palette.accent,
-        filter: "drop-shadow(0 0 10px rgba(34, 211, 238, 0.8))",
-        pointerEvents: "none",
-      }}
-    >
-      <path d="M12 0c.62 6.2 5.18 10.76 11.38 11.38v1.24C17.18 13.24 12.62 17.8 12 24c-.62-6.2-5.18-10.76-11.38-11.38v-1.24C6.82 10.76 11.38 6.2 12 0Z" />
-    </svg>
-  );
-}
-
 export default function ContactFooter() {
   return (
     <section
@@ -338,7 +311,6 @@ export default function ContactFooter() {
         </Row>
       </Container>
 
-      <Star />
     </section>
   );
 }

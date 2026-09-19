@@ -41,7 +41,8 @@ import { palette } from "@/theme";
 
 /* ----- Nhãn nhỏ uppercase (badge "Let's Work Together" + "Follow Me") ----- */
 const LABEL_STYLE: CSSProperties = {
-  fontSize: 12,
+  // [skill: polish] 14px: chạm ngưỡng đọc được tối thiểu của trang (trước 12px)
+  fontSize: 14,
   fontWeight: 600,
   letterSpacing: 1.5,
   textTransform: "uppercase",
@@ -52,7 +53,7 @@ const LABEL_STYLE: CSSProperties = {
 type Social = { label: string; Icon: IconType; href: string };
 
 const SOCIALS: Social[] = [
-  { label: "GitHub", Icon: SiGithub, href: "https://github.com/" },
+  { label: "GitHub", Icon: SiGithub, href: "https://github.com/Peducator" },
   { label: "LinkedIn", Icon: FaLinkedin, href: "https://www.linkedin.com/" },
   { label: "X (Twitter)", Icon: SiX, href: "https://x.com/" },
   { label: "Instagram", Icon: SiInstagram, href: "https://www.instagram.com/" },
@@ -188,9 +189,10 @@ export default function ContactFooter() {
               <Button
                 type="primary"
                 size="large"
-                href="mailto:hello@alexdev.com"
+                href="mailto:hello@buildops.dev"
                 icon={<ArrowUpOutlined />}
                 iconPlacement="end" // antd 6: `iconPosition` đã bị deprecate
+                className="btn-press"
                 style={{
                   marginTop: 24,
                   borderRadius: 12,
@@ -248,9 +250,9 @@ export default function ContactFooter() {
                   lineHeight: 1.6,
                 }}
               >
-                Alex is an exceptional developer who delivers high-quality work
-                on time. His attention to detail and problem-solving skills are
-                outstanding.
+                Phuc is a fast, reliable developer who delivers high-quality
+                work on time. His attention to detail and problem-solving
+                skills are outstanding.
               </Typography.Paragraph>
 
               {/* marginTop: auto -> dòng tác giả luôn dính đáy card dù quote
@@ -267,16 +269,16 @@ export default function ContactFooter() {
                     flex: "0 0 auto",
                   }}
                 >
-                  SJ
+                  MT
                 </Avatar>
                 <Flex vertical>
                   <Typography.Text strong style={{ color: palette.text }}>
-                    Sarah Johnson
+                    Minh Tran
                   </Typography.Text>
                   <Typography.Text
                     style={{ color: palette.accent, fontSize: 12 }}
                   >
-                    CEO, TechStart
+                    Teammate, UIT Group Project
                   </Typography.Text>
                 </Flex>
               </Flex>
@@ -297,8 +299,8 @@ export default function ContactFooter() {
               <Flex vertical gap={10} style={{ marginTop: 6 }}>
                 <ContactRow
                   icon={<MailOutlined />}
-                  text="hello@alexdev.com"
-                  href="mailto:hello@alexdev.com"
+                  text="hello@buildops.dev"
+                  href="mailto:hello@buildops.dev"
                 />
                 <ContactRow
                   icon={<PhoneOutlined />}

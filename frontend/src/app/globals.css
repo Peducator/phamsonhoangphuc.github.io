@@ -44,6 +44,39 @@ body {
 }
 
 /*
+  [skill: make-interfaces-feel-better]
+  1) Feedback nhấn nút: scale(0.96) đúng chuẩn — lớp :active tối đa 40ms, class
+     làn hai giữ lại scale sau khi thả (giải quyết vấn đề "snap back" của transition
+     trên :active); transition khai báo đúng property, không dùng transition: all.
+  2) text-wrap: balance cho heading + pretty cho đoạn văn — tránh dòng lửng/orphan.
+  3) tabular-nums cho số % của thanh kỹ năng — số nhảy không làm layout rung.
+*/
+.btn-press {
+  transition: scale 0.15s ease;
+}
+.btn-press:active {
+  scale: 0.96;
+}
+.btn-press:not(:active) {
+  transition-delay: 40ms;
+}
+
+h1,
+h2,
+h3,
+.ant-typography {
+  text-wrap: pretty;
+}
+h1,
+h2 {
+  text-wrap: balance;
+}
+
+.skillbar-percent {
+  font-variant-numeric: tabular-nums;
+}
+
+/*
   [antd] Gạch chân mục đang chọn của Menu ngang.
   antd dùng CHUNG token `horizontalItemSelectedColor` cho cả màu chữ lẫn màu gạch
   chân (xem node_modules/antd/es/menu/style/theme.js), nên không thể đặt

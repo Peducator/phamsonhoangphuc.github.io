@@ -120,15 +120,15 @@ function StatIcon({ icon: Icon }: { icon: Stat["Icon"] }) {
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        width: 46,
-        height: 46,
+        width: 44,
+        height: 44,
         flex: "0 0 auto",
         borderRadius: 12,
         border: `1px solid rgba(34, 211, 238, 0.45)`,
         boxShadow: `0 0 12px rgba(34, 211, 238, 0.3)`,
         background: "rgba(34, 211, 238, 0.06)",
         color: palette.accent,
-        fontSize: 22,
+        fontSize: 20,
       }}
     >
       <Icon />
@@ -142,11 +142,30 @@ function StatCell({ stat }: { stat: Stat }) {
   return (
     <Flex gap={14} align="flex-start">
       <StatIcon icon={stat.Icon} />
-      <Flex vertical gap={2} style={{ minWidth: 0 }}>
-        <Typography.Text strong style={{ fontSize: 15, color: palette.text }}>
+      <Flex vertical gap={6} style={{ minWidth: 0 }}>
+        {/* [skill: polish] 3 cấp chữ rõ rệt theo mẫu: eyebrow label mờ -> số lớn
+            -> mô tả nhỏ. Trước đây title đậm 15px cạnh số to cùng màu nên phẳng. */}
+        <Typography.Text
+          style={{
+            fontSize: 14,
+            fontWeight: 500,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: palette.textMuted,
+          }}
+        >
           {stat.title}
         </Typography.Text>
-        <Typography.Title level={3} style={{ margin: 0, lineHeight: 1.15 }}>
+        <Typography.Title
+          level={3}
+          style={{
+            margin: 0,
+            lineHeight: 1.15,
+            fontWeight: 600,
+            // [skill: polish] tabular-nums: các con số stat đổi không rung layout
+            fontVariantNumeric: "tabular-nums",
+          }}
+        >
           {stat.value}
           <span style={{ color: palette.accent }}>{stat.suffix}</span>
         </Typography.Title>
@@ -176,7 +195,12 @@ export default function AboutSkills() {
         <Row
           gutter={[48, 40]}
           align="middle"
-          style={{ paddingBlock: "clamp(48px, 7vw, 80px)" }}
+          style={{
+            paddingBlock: "clamp(48px, 7vw, 72px)",
+            // [skill: polish] đường phân cách mảnh giữa 2 khối — "borders for structure",
+            // tách About khỏi Skills mà không cần khoảng trống lớn
+            borderBottom: `1px solid ${palette.border}`,
+          }}
         >
           {/* ----- CỘT TRÁI: giới thiệu -----
               [responsive] xs/sm = 24 (xếp dọc), md trở lên = 12/24 như thiết kế */}
@@ -268,11 +292,12 @@ export default function AboutSkills() {
           vertical
           align="center"
           gap={10}
-          style={{ paddingBottom: "clamp(40px, 6vw, 64px)" }}
+          style={{ paddingBlock: "clamp(40px, 6vw, 64px)" }}
         >
           <Typography.Text
             style={{
-              fontSize: 14,
+              fontSize: 15,
+              fontWeight: 500,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
               color: palette.textMuted,
@@ -318,12 +343,7 @@ export default function AboutSkills() {
                 }}
               >
                 {/* các SkillBar xếp dọc, giãn đều chiều cao card */}
-                <Flex
-                  vertical
-                  justify="space-between"
-                  gap={18}
-                  style={{ minHeight: 150 }}
-                >
+                <Flex vertical justify="space-between" gap={24}>
                   {group.skills.map((skill) => (
                     <SkillBar key={skill.name} {...skill} />
                   ))}

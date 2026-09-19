@@ -72,32 +72,47 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
                   fontSize: "clamp(1.875rem, 5.2vw, 3.1rem)",
                   fontWeight: 700,
                   lineHeight: 1.13,
-                  letterSpacing: "-0.025em",
+                  // [skill: polish] tracking chặt hơn ở cỡ chữ lớn (trước: -0.025em)
+                  letterSpacing: "-0.03em",
                   margin: 0,
+                  textWrap: "balance",
                 }}
               >
                 Hi, I&apos;m{" "}
                 <span
                   style={{
                     color: palette.accent,
-                    textShadow: "0 0 34px rgba(34, 211, 238, 0.35)",
+                    // [skill: polish] glow chữ đồng bộ với vòng tròn neon — trước
+                    // đây chỉ là chữ màu, thiếu hiệu ứng nổi
+                    textShadow:
+                      "0 0 24px rgba(34, 211, 238, 0.45), 0 0 64px rgba(34, 211, 238, 0.18)",
                   }}
                 >
                   Hoang Phuc
                 </span>
                 <br />
-                I build and deploy things for the web.
+                <span
+                  style={{
+                    background:
+                      "linear-gradient(90deg, #e8ecf4 30%, rgba(232, 236, 244, 0.55))",
+                    WebkitBackgroundClip: "text",
+                    backgroundClip: "text",
+                    color: "transparent",
+                  }}
+                >
+                  I build and deploy things for the web.
+                </span>
               </Typography.Title>
 
               {/* Đoạn mô tả: p thuần -> Typography.Paragraph */}
-              <Typography.Paragraph
-                style={{
-                  maxWidth: "32rem",
-                  margin: 0,
-                  fontSize: "clamp(1rem, 1.5vw, 1.06rem)",
-                  lineHeight: 1.65,
-                  color: palette.textMuted,
-                }}
+              <Typography.Paragraph                  style={{
+                    maxWidth: "32rem",
+                    margin: 0,
+                    fontSize: "clamp(1rem, 1.5vw, 1.06rem)",
+                    lineHeight: 1.65,
+                    color: palette.textMuted,
+                    textWrap: "pretty",
+                  }}
               >
                 I build and deploy things for the web, and care about the whole
                 path — from a clean interface to the infrastructure it runs on.
@@ -115,7 +130,7 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
                     type="primary"
                     size="large"
                     block
-                    href="#projects"
+                    href={`${BASE}/#projects`}
                     icon={<ExportOutlined />}
                     iconPlacement="end" // antd 6: `iconPosition` đã bị deprecate
                     style={{ minHeight: 48, height: "auto", paddingBlock: 13 }}

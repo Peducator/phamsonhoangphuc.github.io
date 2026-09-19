@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button, Col, Drawer, Layout, Menu, Row, Typography } from "antd";
@@ -64,7 +65,9 @@ export default function Header() {
         background: "rgba(11, 15, 25, 0.72)",
         backdropFilter: "blur(14px)",
         WebkitBackdropFilter: "blur(14px)",
-        lineHeight: "normal",
+        // [skill: polish] bo góc đồng tâm: section bên dưới + Card 20 -> header 24
+        borderBottomLeftRadius: 24,
+        borderBottomRightRadius: 24,
         padding: 0,
       }}
     >
@@ -129,6 +132,10 @@ export default function Header() {
               href={`${BASE}/#contact`}
               icon={<ExportOutlined />}
               iconPlacement="end" // antd 6: `iconPosition` đã bị deprecate
+              // [skill: polish] feedback nhấn nút — scale 0.96 chuẩn, transition
+              // khai báo đúng property chứ không dùng transition: all
+              style={{ scale: "0.96" } as CSSProperties}
+              className="btn-press"
             >
               Let&apos;s Connect
             </Button>

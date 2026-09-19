@@ -27,7 +27,10 @@ export default function SkillBar({ name, Icon, percent }: Skill) {
             {name}
           </Typography.Text>
         </Space>
-        <Typography.Text style={{ fontSize: 15, color: palette.accent, fontWeight: 600 }}>
+        <Typography.Text
+          className="skillbar-percent" // [skill: polish] tabular-nums — số % không làm rung layout
+          style={{ fontSize: 15, color: palette.accent, fontWeight: 600 }}
+        >
           {percent}%
         </Typography.Text>
       </Space>

@@ -9,7 +9,8 @@ import { palette } from "@/theme";
 
 const PORTRAIT_FILE = "hero-character.png";
 
-// GitHub Pages project site serving dưới /<repo>/ — asset/link tuyệt đối phải nối basePath
+// User site (repo <account>.github.io) phục vụ ở gốc domain → rỗng. Host dưới path
+// (project site) thì build với NEXT_PUBLIC_BASE_PATH=/<path>.
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {

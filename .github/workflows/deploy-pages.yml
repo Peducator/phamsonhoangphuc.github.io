@@ -27,11 +27,10 @@ jobs:
           node-version: 20
           cache: npm
           cache-dependency-path: frontend/package-lock.json
+      # User site (repo <account>.github.io) serving tại gốc domain — không cần basePath.
+      # Nếu sau này hosting dưới path (project site), truyền NEXT_PUBLIC_BASE_PATH=/<path>.
       - run: npm ci
       - run: npm run build
-        env:
-          # GitHub Pages project site: https://peducator.github.io/personal_site/
-          NEXT_PUBLIC_BASE_PATH: /personal_site
       - uses: actions/upload-pages-artifact@v3
         with:
           # next build với output: "export" ghi ra frontend/out

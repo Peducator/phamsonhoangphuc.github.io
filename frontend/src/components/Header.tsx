@@ -9,7 +9,8 @@ import { ExportOutlined, MenuOutlined } from "@ant-design/icons";
 import Container from "./Container";
 import { palette } from "@/theme";
 
-// GitHub Pages project site serving dưới /<repo>/ — link tuyệt đối phải nối basePath
+// User site (repo <account>.github.io) phục vụ ở gốc domain → rỗng. Host dưới path
+// (project site) thì build với NEXT_PUBLIC_BASE_PATH=/<path>.
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const NAV_LINKS = [

@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { Button, Col, Drawer, Layout, Menu, Row, Typography } from "antd";
 import type { ColProps, MenuProps } from "antd";
 import { ExportOutlined, MenuOutlined } from "@ant-design/icons";
+import AnchorLink, { goToHash } from "./AnchorLink";
 import Container from "./Container";
 import { palette } from "@/theme";
 
@@ -27,10 +28,20 @@ const NAV_LINKS = [
  * [antd] Menu của antd nhận mảng items dạng object thay vì children <li>.
  * Nội dung 6 mục giữ nguyên, chỉ đổi cách khai báo.
  */
-const NAV_ITEMS: MenuProps["items"] = NAV_LINKS.map((item) => ({
-  key: item.key,
-  label: <Link href={item.href}>{item.label}</Link>,
-}));
+// [responsive] Hai bộ items giống hệt nhau, khác duy nhất delay cuộn:
+//  - menu ngang (desktop): cuộn NGAY (delay 0)
+//  - menu Drawer (mobile): đợi ~380ms cho animation đóng drawer + nhả khóa
+//    scroll body xong rồi mới cuộn — nếu cuộn ngay, scroll bị hủy giữa đường
+//    và About/Skills landing sai vị trí (lỗi gốc của anchor trên mobile).
+const navItems = (delay: number): MenuProps["items"] =>
+  NAV_LINKS.map((item) => ({
+    key: item.key,
+    // AnchorLink tự cuộn với đệm header — fix lỗi nhảy About/Skills sai chỗ
+    label: <AnchorLink href={item.href} delay={delay}>{item.label}</AnchorLink>,
+  }));
+
+const NAV_ITEMS = navItems(0);
+const NAV_ITEMS_DRAWER = navItems(380);
 
 /**
  * [responsive] Công tắc ẩn/hiện dùng đúng Grid của antd, KHÔNG cần media query.
@@ -136,6 +147,7 @@ export default function Header() {
               // khai báo đúng property chứ không dùng transition: all
               style={{ scale: "0.96" } as CSSProperties}
               className="btn-press"
+              onClick={(e) => goToHash(e, "#contact")}
             >
               Let&apos;s Connect
             </Button>
@@ -168,23 +180,26 @@ export default function Header() {
         title={<Typography.Text strong>Menu</Typography.Text>}
         styles={{ body: { padding: 16 }, footer: { padding: 16 } }}
         // Nút "Let's Connect" đặt ở đáy drawer theo đúng yêu cầu
-        footer={
-          <Button
-            type="primary"
-            block
-            size="large"
-            href={`${BASE}/#contact`}
-            icon={<ExportOutlined />}
-            iconPlacement="end"
-            onClick={() => setDrawerOpen(false)}
-          >
-            Let&apos;s Connect
-          </Button>
+        footer={            <Button
+              type="primary"
+              block
+              size="large"
+              href={`${BASE}/#contact`}
+              icon={<ExportOutlined />}
+              iconPlacement="end"
+              onClick={(e) => {
+                // Đợi đóng drawer (~380ms) rồi mới cuộn tới #contact
+                goToHash(e, "#contact", 380);
+                setDrawerOpen(false);
+              }}
+            >
+              Let&apos;s Connect
+            </Button>
         }
       >
         <Menu
           mode="vertical"
-          items={NAV_ITEMS}
+          items={NAV_ITEMS_DRAWER}
           selectedKeys={selectedKeys}
           onClick={() => setDrawerOpen(false)}
           style={{ background: "transparent", borderInlineEnd: "none" }}

@@ -139,6 +139,11 @@ export default function ContactFooter() {
         position: "relative",
         overflow: "hidden",
         background: palette.bg,
+        // [fix anchor] Đệm cuộn cuối trang: không có footer nữa nên #contact là
+        // section cuối — khi bấm menu Contact, trình duyệt hết tài liệu để cuộn
+        // và dừng LỆCH vị trí (thấy 160px thay vì 96px). Padding đáy cho phép
+        // cuộn đủ sâu để đỉnh section chạm đúng offset header.
+        paddingBottom: "clamp(96px, 12vh, 160px)",
       }}
     >
       <Container>

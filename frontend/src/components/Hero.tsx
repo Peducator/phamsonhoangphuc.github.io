@@ -5,6 +5,7 @@ import { Button, Col, Flex, Row, Tag, Typography } from "antd";
 import { DownloadOutlined, ExportOutlined } from "@ant-design/icons";
 import TechStack from "./TechStack";
 import Container from "./Container";
+import { goToHash } from "./AnchorLink";
 import { palette } from "@/theme";
 
 const PORTRAIT_FILE = "hero-character.png";
@@ -134,6 +135,7 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
                     icon={<ExportOutlined />}
                     iconPlacement="end" // antd 6: `iconPosition` đã bị deprecate
                     style={{ minHeight: 48, height: "auto", paddingBlock: 13 }}
+                    onClick={(e) => goToHash(e, "#projects")}
                   >
                     View My Work
                   </Button>

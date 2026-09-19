@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { Button, Col, Drawer, Layout, Menu, Row, Typography } from "antd";
 import type { ColProps, MenuProps } from "antd";
 import { ExportOutlined, MenuOutlined } from "@ant-design/icons";
-import AnchorLink, { goToHash } from "./AnchorLink";
+import AnchorLink, { goToHash, scrollToHash } from "./AnchorLink";
 import Container from "./Container";
 import { palette } from "@/theme";
 
@@ -28,20 +28,12 @@ const NAV_LINKS = [
  * [antd] Menu của antd nhận mảng items dạng object thay vì children <li>.
  * Nội dung 6 mục giữ nguyên, chỉ đổi cách khai báo.
  */
-// [responsive] Hai bộ items giống hệt nhau, khác duy nhất delay cuộn:
-//  - menu ngang (desktop): cuộn NGAY (delay 0)
-//  - menu Drawer (mobile): đợi ~380ms cho animation đóng drawer + nhả khóa
-//    scroll body xong rồi mới cuộn — nếu cuộn ngay, scroll bị hủy giữa đường
-//    và About/Skills landing sai vị trí (lỗi gốc của anchor trên mobile).
-const navItems = (delay: number): MenuProps["items"] =>
-  NAV_LINKS.map((item) => ({
-    key: item.key,
-    // AnchorLink tự cuộn với đệm header — fix lỗi nhảy About/Skills sai chỗ
-    label: <AnchorLink href={item.href} delay={delay}>{item.label}</AnchorLink>,
-  }));
-
-const NAV_ITEMS = navItems(0);
-const NAV_ITEMS_DRAWER = navItems(380);
+// Menu ngang (desktop): cuộn NGAY khi bấm.
+const NAV_ITEMS: MenuProps["items"] = NAV_LINKS.map((item) => ({
+  key: item.key,
+  // AnchorLink tự cuộn với đệm header — fix lỗi nhảy About/Skills sai chỗ
+  label: <AnchorLink href={item.href}>{item.label}</AnchorLink>,
+}));
 
 /**
  * [responsive] Công tắc ẩn/hiện dùng đúng Grid của antd, KHÔNG cần media query.
@@ -62,6 +54,38 @@ const MOBILE_AUTO: ColProps["xs"] = { flex: "0 0 auto" };
 export default function Header() {
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  // [smooth] Đích neo chờ xử lý: click trong Drawer chỉ ĐÁNH DẤU đích + đóng
+  // drawer; việc cuộn diễn ra trong afterOpenChange — đúng khoảnh khắc body
+  // được nhả khóa scroll, không còn độ trễ cứng 380ms lơ lửng.
+  const [pendingHash, setPendingHash] = useState<string | null>(null);
+
+  // Menu Drawer: chặn native navigation, ghi nhận đích rồi đóng drawer.
+  const drawerItems: MenuProps["items"] = NAV_LINKS.map((item) => ({
+    key: item.key,
+    label: (
+      <AnchorLink
+        href={item.href}
+        onClick={(e) => {
+          e.preventDefault(); // AnchorLink thấy defaultPrevented sẽ đứng im
+          setPendingHash(item.href);
+          setDrawerOpen(false);
+        }}
+      >
+        {item.label}
+      </AnchorLink>
+    ),
+  }));
+
+  // Drawer vừa đóng xong (open=false): cuộn tới đích đã ghi nhận.
+  const afterDrawerClose = (open: boolean) => {
+    if (open || pendingHash === null) return;
+    const hash = pendingHash.includes("#")
+      ? pendingHash.slice(pendingHash.indexOf("#"))
+      : ""; // link Home "/" -> cuộn về đỉnh trang
+    scrollToHash(hash);
+    window.history.pushState(null, "", `${BASE}/${hash}`);
+    setPendingHash(null);
+  };
 
   // Giữ nguyên logic active cũ: chỉ mục Home tự nhận active theo pathname
   const selectedKeys = pathname === "/" ? ["home"] : [];
@@ -175,31 +199,35 @@ export default function Header() {
       <Drawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
+        // [smooth] Cuộn sau khi drawer đóng XONG — không đoán thời lượng animation
+        afterOpenChange={afterDrawerClose}
         placement="right"
         size={300} // antd 6: `width` đã bị deprecate, dùng `size`
         title={<Typography.Text strong>Menu</Typography.Text>}
         styles={{ body: { padding: 16 }, footer: { padding: 16 } }}
         // Nút "Let's Connect" đặt ở đáy drawer theo đúng yêu cầu
-        footer={            <Button
-              type="primary"
-              block
-              size="large"
-              href={`${BASE}/#contact`}
-              icon={<ExportOutlined />}
-              iconPlacement="end"
-              onClick={(e) => {
-                // Đợi đóng drawer (~380ms) rồi mới cuộn tới #contact
-                goToHash(e, "#contact", 380);
-                setDrawerOpen(false);
-              }}
-            >
-              Let&apos;s Connect
-            </Button>
+        footer={
+          <Button
+            type="primary"
+            block
+            size="large"
+            href={`${BASE}/#contact`}
+            icon={<ExportOutlined />}
+            iconPlacement="end"
+            onClick={(e) => {
+              // Cùng cơ chế với menu: đánh dấu đích, cuộn khi drawer đóng xong
+              e.preventDefault();
+              setPendingHash("#contact");
+              setDrawerOpen(false);
+            }}
+          >
+            Let&apos;s Connect
+          </Button>
         }
       >
         <Menu
           mode="vertical"
-          items={NAV_ITEMS_DRAWER}
+          items={drawerItems}
           selectedKeys={selectedKeys}
           onClick={() => setDrawerOpen(false)}
           style={{ background: "transparent", borderInlineEnd: "none" }}

@@ -11,26 +11,83 @@ const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
  */
 export const HEADER_OFFSET = 96;
 
+/* ============================================================
+   [smooth] Cuộn mượt tự điều khiển thay cho window.scrollTo({smooth}):
+   - easing easeInOutCubic: vào chậm - giữa nhanh - đích giảm tốc dịu,
+     KHÔNG còn kiểu native "phanh cứng" ở cuối.
+   - thời lượng tỉ lệ theo cự ly (400-800ms): đoạn ngắn không bị lê thê,
+     đoạn dài không bị phóng như tên lửa.
+   - Hủy ngay khi người dùng chạm/véo/cuộn tay (wheel) — hành vi chuẩn:
+     người dùng luôn thắng animation.
+   ============================================================ */
+const easeInOutCubic = (t: number) =>
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+const CANCEL_EVENTS = [
+  "wheel",
+  "touchstart",
+  "keydown",
+] as const;
+
+export function animateScrollTo(
+  targetY: number,
+  onDone?: () => void,
+): void {
+  const startY = window.scrollY;
+  const distance = targetY - startY;
+  // Cự ly nhỏ cuộn nhanh, xa nhất 800ms — con số từ kỹ thuật animate phổ biến
+  const duration = Math.min(800, Math.max(400, Math.abs(distance) * 0.4));
+  let rafId = 0;
+  let startTime = 0;
+  let finished = false;
+
+  const cancel = () => {
+    if (finished) return;
+    finished = true;
+    cancelAnimationFrame(rafId);
+    for (const ev of CANCEL_EVENTS)
+      window.removeEventListener(ev, cancel, { capture: true });
+  };
+
+  // Hủy nếu người dùng chủ động cuộn — passive listener, không chặn mặc định
+  for (const ev of CANCEL_EVENTS)
+    window.addEventListener(ev, cancel, {
+      capture: true,
+      passive: true,
+    });
+
+  const step = (now: number) => {
+    if (finished) return;
+    if (startTime === 0) startTime = now;
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = easeInOutCubic(progress);
+    window.scrollTo(0, Math.round(startY + distance * eased));
+    if (progress < 1) {
+      rafId = requestAnimationFrame(step);
+    } else {
+      cancel();
+      onDone?.();
+    }
+  };
+  rafId = requestAnimationFrame(step);
+}
+
 /**
- * Cuộn mượt tới #hash với đệm header, trả về true nếu có đích để cuộn.
- * Dùng thay cho native anchor vì 2 lỗi thật:
- *  1) Drawer mobile khóa scroll body — khi đóng drawer cùng lúc với native
- *     scroll thì scroll bị hủy giữa đường -> landing sai vị trí.
- *  2) Re-click khi hash đã trùng thì native anchor là no-op (không cuộn lại).
+ * Cuộn tới #hash với đệm header, trả về true nếu có đích để cuộn.
+ * Dùng thay cho native anchor vì các lỗi thật đã gặp: drawer khóa scroll,
+ * re-click no-op, section cuối hết đường cuộn.
  */
-export function scrollToHash(
-  hash: string,
-  behavior: ScrollBehavior = "smooth",
-): boolean {
+export function scrollToHash(hash: string): boolean {
   const id = hash.replace(/^#/, "");
   if (!id) {
-    window.scrollTo({ top: 0, behavior });
+    animateScrollTo(0);
     return true;
   }
   const el = document.getElementById(id);
   if (!el) return false;
   const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
-  window.scrollTo({ top, behavior });
+  animateScrollTo(top);
   return true;
 }
 
@@ -53,9 +110,10 @@ export function goToHash(
 type AnchorLinkProps = Omit<ComponentProps<typeof Link>, "href"> & {
   href: string;
   /**
-   * Trì hoãn trước khi cuộn (ms). Dùng cho menu trong Drawer: đợi animation
-   * đóng drawer + nhả khóa scroll body xong (~350ms) rồi mới cuộn, nếu không
-   * scroll sẽ bị hủy giữa đường.
+   * "drawer": đợi Drawer đóng XONG rồi mới cuộn — dùng callback afterOpenChange
+   * của antd Drawer thay cho độ trễ cứng 380ms: cuộn bắt đầu đúng khoảnh khắc
+   * scroll body được nhả khóa, không còn khoảng chết lơ lửng.
+   * Số/không truyền: cuộn ngay (menu ngang desktop, nút CTA).
    */
   delay?: number;
   onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
@@ -64,7 +122,7 @@ type AnchorLinkProps = Omit<ComponentProps<typeof Link>, "href"> & {
 
 /**
  * Link neo cuộn mượt: chặn native navigation, tự tính vị trí đích trừ đệm
- * header rồi scrollTo — không phụ thuộc scroll-padding của trình duyệt.
+ * header rồi animate cuộn — không phụ thuộc scroll-padding của trình duyệt.
  */
 export default function AnchorLink({
   href,
@@ -80,10 +138,12 @@ export default function AnchorLink({
     if (hashIndex === -1) return; // link thường (vd "/") -> next/link tự xử lý
     e.preventDefault();
     const hash = href.slice(hashIndex);
-    window.setTimeout(() => {
+    if (delay > 0) {
+      window.setTimeout(() => scrollToHash(hash), delay);
+    } else {
       scrollToHash(hash);
-      window.history.pushState(null, "", `${BASE}/${hash}`);
-    }, delay);
+    }
+    window.history.pushState(null, "", `${BASE}/${hash}`);
   };
 
   return (

@@ -9,6 +9,9 @@ import { palette } from "@/theme";
 
 const PORTRAIT_FILE = "hero-character.png";
 
+// GitHub Pages project site serving dưới /<repo>/ — asset/link tuyệt đối phải nối basePath
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
   return (
     <section id="home" style={{ position: "relative", overflow: "hidden" }}>
@@ -123,7 +126,7 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
                   <Button
                     size="large"
                     block
-                    href="/cv.pdf"
+                    href={`${BASE}/cv.pdf`}
                     icon={<DownloadOutlined />}
                     iconPlacement="end"
                     style={{ minHeight: 48, height: "auto", paddingBlock: 13 }}

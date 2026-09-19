@@ -16,14 +16,13 @@ src/
 │   ├── page.tsx          Lắp các khối thành trang (Server Component)
 │   └── globals.css       CSS thuần duy nhất: base body + 2 override antd không làm được
 ├── components/
-│   ├── Container.tsx     Khung bề rộng trang (max-width 1180) — mọi section đều bọc trong đây
+│   ├── Container.tsx     Khung bề rộng trang (max-width 1920) — mọi section đều bọc trong đây
 │   ├── Header.tsx        Thanh trên cùng: logo, menu ngang, nút CTA, hamburger + Drawer
 │   ├── Hero.tsx          Khối đầu trang (#home): 2 cột chữ / minh hoạ
 │   ├── TechStack.tsx     Hàng logo công nghệ (nằm trong cột chữ của Hero)
 │   ├── AboutSkills.tsx   Section About Me + My Skills (#about, #skills)
 │   ├── SkillBar.tsx      Một hàng kỹ năng: icon + tên + % + thanh Progress glow
-│   ├── ContactFooter.tsx Section Contact 3 cột (#contact): CTA / testimonial / social
-│   └── Footer.tsx        Footer tối thiểu — dòng copyright ở đáy trang
+│   └── ContactFooter.tsx Section Contact 3 cột (#contact): CTA / testimonial / social
 └── theme.ts              Token thiết kế: màu (palette), bo góc, control height, token component
 ```
 
@@ -38,7 +37,7 @@ Section About + Skills được dựng theo một ảnh mẫu, nhưng **màu tro
 mọi giá trị đều lấy từ palette của trang để đồng bộ với Hero/Header. Muốn đổi tông cả trang
 (ví dụ cyan → tím) chỉ cần sửa `palette.accent` trong `theme.ts`, mọi section đổi theo.
 
-Các hiệu ứng glow (viền icon stat, bóng thanh progress, chấm dot) dùng giá trị
+Các hiệu ứng glow (viền icon stat, bóng thanh progress) dùng giá trị
 `rgba(34, 211, 238, …)` — dẫn xuất của `palette.accent`, chỉ tồn tại ở AboutSkills/SkillBar.
 
 ---
@@ -53,8 +52,7 @@ body                                  nền #0b0f19, overflow-x: hidden
         └── main
             ├── Hero.tsx              id="home"
             ├── AboutSkills.tsx       id="about" — chứa luôn anchor #skills (mục My Skills)
-            ├── ContactFooter.tsx     id="contact" — CTA + testimonial + social/liên hệ
-            └── Footer.tsx            dòng copyright ở đáy trang
+            └── ContactFooter.tsx     id="contact" — CTA + testimonial + social/liên hệ
 ```
 
 **Cấu trúc bên trong từng khối:**
@@ -62,13 +60,17 @@ body                                  nền #0b0f19, overflow-x: hidden
 - **Header** — một `Row` (wrap = false) gồm 4 `Col`:
   `logo` → `menu ngang` → `nút Let's Connect` → `burger`.
   Hai cột giữa và phải bị ẩn/hiện theo breakpoint bằng chính class của `Col`.
+  Link logo và 2 nút CTA là đường dẫn tuyệt đối nối hằng `BASE`
+  (`NEXT_PUBLIC_BASE_PATH`) — xem mục Deploy.
 - **Hero** — một `Row` gutter `[48, 48]` gồm 2 `Col`:
   `cột chữ` (badge → tiêu đề → mô tả → 2 nút CTA → hàng icon) và `cột minh hoạ`
-  (vòng glow, ảnh nhân vật, sparkle).
+  (vòng glow, ảnh nhân vật).
   Cột minh hoạ dùng `position: relative` + `display: grid; place-items: center`;
   vòng glow là `absolute` **chỉ để trang trí**, không mang nội dung.
-- **Container** — `max-width: 1180px`, căn giữa, padding hai bên
-  `clamp(20px, 4vw, 48px)`. Đây là thứ quyết định "khung" của cả trang.
+- **Container** — `max-width: 1920px`, căn giữa, padding hai bên
+  `clamp(20px, 4vw, 64px)`. Đây là thứ quyết định "khung" của cả trang:
+  nội dung chiếm trọn bề rộng màn hình phổ biến (Full HD trở xuống), chỉ chặn
+  lại ở màn hình siêu rộng (2K/ultrawide) để dòng chữ không dàn quá dài.
 - **AboutSkills** — hai khối xếp dọc trong một section:
   - **About Me** — `Row` 2 cột `md={12}/md={12}`: trái là badge `Tag` + tiêu đề
     (chữ "passionate" bọc span cyan) + đoạn giới thiệu; phải là lưới `Row` 2×2
@@ -80,13 +82,12 @@ body                                  nền #0b0f19, overflow-x: hidden
     chỉ cần sửa mảng, không đụng JSX.
 - **SkillBar** — hàng trên: icon `react-icons/si` + tên + số % cyan; hàng dưới:
   `Progress` của antd (`railColor` — antd 6 đã đổi tên từ `trailColor`,
-  `size={["100%", 6]}`, `showInfo={false}`). Hỗ trợ `dot` — chấm glow absolute
-  tại vị trí `percent` trên thanh (dùng ở PostgreSQL theo thiết kế).
+  `size={["100%", 6]}`, `showInfo={false}`).
 - **ContactFooter** — một `Row` gutter `[32, 32]` gồm 3 `Col` `md={8}`:
   `CTA` (label cyan → tiêu đề → đoạn → nút "Get In Touch") → `Card testimonial`
   (dấu ngoặc kép glow + quote + dòng tác giả với `marginTop: "auto"` để luôn
   dính đáy card) → `Social` (label + 4 nút tròn react-icons + 2 dòng
-  mailto/tel). Ngôi sao 4 cánh là SVG absolute ở góc phải-dưới, thuần trang trí.
+  mailto/tel).
   Dữ liệu social nằm trong mảng `SOCIALS` ngay đầu file — href đang là
   placeholder, thay URL thật bằng cách sửa mảng.
 
@@ -96,7 +97,7 @@ body                                  nền #0b0f19, overflow-x: hidden
 
 | Thành phần | Mobile `< 768px` | Tablet `768–1023px` | Desktop `≥ 1024px` |
 |---|---|---|---|
-| Header | logo trái + **burger** phải; menu ngang ẩn; nút CTA ẩn (nằm trong Drawer) | menu ngang 6 mục + nút CTA; burger ẩn | giống tablet, khung rộng tối đa 1180px |
+| Header | logo trái + **burger** phải; menu ngang ẩn; nút CTA ẩn (nằm trong Drawer) | menu ngang 6 mục + nút CTA; burger ẩn | giống tablet, khung rộng tối đa 1920px |
 | Menu | mở bằng **Drawer trượt từ phải**: 6 mục xếp dọc + nút "Let's Connect" ở đáy | hàng ngang, căn giữa | hàng ngang, căn giữa |
 | Hero | 1 cột: chữ ở trên, minh hoạ xuống dưới và **canh giữa** | 2 cột `13/24` chữ — `11/24` minh hoạ | giống tablet |
 | 2 nút CTA | **xếp dọc, full width** | nằm cạnh nhau (`12/24` mỗi nút) | nằm cạnh nhau |
@@ -115,7 +116,7 @@ nhất dùng cơ chế khác:
 1. **Cỡ tiêu đề** — `fontSize: clamp(1.875rem, 5.2vw, 3.1rem)`. Dùng cách này thay vì
    `useBreakpoint()` là để trang **không bị nháy chữ** lúc hydrate (SSR không biết bề
    rộng màn hình, nên nếu chọn cỡ bằng JS thì lần vẽ đầu luôn sai cỡ).
-2. **Padding hai bên của Container** — `clamp(20px, 4vw, 48px)`, cùng lý do.
+2. **Padding hai bên của Container** — `clamp(20px, 4vw, 64px)`, cùng lý do.
 
 ---
 
@@ -161,14 +162,15 @@ cố tình nhận `span: 24` (bề rộng xác định).
 | Cỡ tiêu đề theo breakpoint | `Hero.tsx` — biểu thức `clamp(...)` của `Typography.Title` |
 | Thêm/bớt mục menu | `Header.tsx` — mảng `NAV_LINKS` (dùng chung cho cả menu ngang và Drawer) |
 | Mốc chuyển menu ngang ↔ burger | `Header.tsx` — các hằng `MOBILE_HIDDEN` / `DESKTOP_AUTO` / `MOBILE_AUTO` (hiện là mốc `md` = 768px) |
-| Độ nén của menu ngang | `src/theme.ts` — `Menu.fontSize: 15`, `Menu.itemPaddingInline: 12` |
+| Độ nén của menu ngang | `src/theme.ts` — `Menu.fontSize: 16`, `Menu.itemPaddingInline: 10` |
 | Hàng logo công nghệ | `src/components/TechStack.tsx` — mảng `TECHNOLOGIES` |
 | Nội dung About / stat 2×2 | `src/components/AboutSkills.tsx` — mảng `STATS` |
 | Kỹ năng & phần trăm | `src/components/AboutSkills.tsx` — mảng `SKILL_GROUPS` (thanh tự sinh từ mảng) |
-| Chấm glow cuối thanh PostgreSQL | `src/components/SkillBar.tsx` — prop `dot` của skill |
 | Cao/thấp section About + Skills | `AboutSkills.tsx` — các `paddingBlock: clamp(...)` |
 | Social / email / SĐT của Contact | `src/components/ContactFooter.tsx` — mảng `SOCIALS` + 2 `ContactRow` |
 | Nội dung testimonial | `src/components/ContactFooter.tsx` — cột 2 của `Row` (quote + tên + chức danh) |
+| Link logo / CTA / CV (đường dẫn tuyệt đối) | `Header.tsx` / `Hero.tsx` — hằng `BASE` |
+| Cấu hình deploy GitHub Pages | `next.config.ts` (`basePath`) + `.github/workflows/deploy-pages.yml` |
 
 ---
 
@@ -179,7 +181,8 @@ cố tình nhận `span: 24` (bề rộng xác định).
    (375px, 759px, 827px, 903px, 951px).
 2. **Không đặt nội dung quan trọng vào khối `position: absolute`.** Card JSON nổi trên
    minh hoạ trước đây đã bị bỏ đúng vì lý do này: cột hẹp lại là nó đè lên chữ bên dưới.
-   Hiện chỉ còn vòng glow và sparkle là `absolute`, cả hai đều trang trí thuần.
+   Hiện chỉ còn vệt sáng sau Hero và vòng glow quanh ảnh là `absolute`, cả hai đều
+   trang trí thuần.
 3. **Đừng dùng `theme="dark"` trên `Menu`.** Bộ token dark của antd ép
    `activeBarHeight: 0` và `activeBarBorderWidth: 0` → mất gạch chân của mục đang chọn.
    Màu dark đã được khai báo thủ công trong `theme.ts` rồi nên không cần prop đó.
@@ -216,19 +219,36 @@ npm run dev        # http://localhost:3000
 npm run lint && npx tsc --noEmit && npm run build   # kiểm tra
 ```
 
+Build local **không đặt** `NEXT_PUBLIC_BASE_PATH` — đường dẫn giữ nguyên dạng `/...`
+như khi chạy `next dev`.
+
 ---
 
-## 8. Còn thiếu (không phải lỗi layout)
+## 8. Deploy GitHub Pages
+
+Repo deploy lên **GitHub Pages project site**: `https://peducator.github.io/personal_site/`
+— site nằm dưới `/personal_site/`, nên mọi URL sinh ra lúc build phải có prefix này.
+
+- `next.config.ts` — `output: "export"` + `basePath` đọc từ env
+  `NEXT_PUBLIC_BASE_PATH` (CI truyền `/personal_site`).
+- Link `<a>` thuần của antd (logo, 2 nút CTA, Download CV) tự nối hằng
+  `BASE = process.env.NEXT_PUBLIC_BASE_PATH`; `Link`/`Image` của Next tự xử lý basePath.
+- Workflow `.github/workflows/deploy-pages.yml` chạy `npm ci` + `npm run build`
+  trong `frontend/` (cần `package-lock.json` cho `npm ci`), upload `frontend/out`.
+- Bật deploy lần đầu (làm tay trên GitHub): **Settings → Pages → Source: GitHub
+  Actions**. Từ đó mỗi push lên `master` là tự build và deploy.
+- Kiểm tra được cục bộ export đúng basePath:
+  `NEXT_PUBLIC_BASE_PATH=/personal_site npm run build` rồi xem `out/index.html`.
+
+---
+
+## 9. Còn thiếu (không phải lỗi layout)
 
 - `public/hero-character.png` — ảnh nhân vật 3D; chưa có thì hiện vòng nét đứt ghi chú.
 - `public/cv.pdf` — nút "Download CV" đang trỏ tới file chưa tồn tại.
 - Các anchor `#projects`, `#blog` chưa có section tương ứng (`#about`, `#skills`
   và `#contact` đã nhảy đúng — `#skills` nằm trong AboutSkills, `#contact` là
   ContactFooter), nên bấm vào chưa nhảy đi đâu.
-- **Vì sao từng có "Skills cần Footer":** khi `#skills` còn là anchor cuối trang,
-  trình duyệt không thể cuộn quá đáy nên nó dừng hụt đỉnh; Footer từng phải đặt
-  `minHeight: 220` làm khoảng đệm cuộn. Từ khi có ContactFooter nằm dưới About +
-  Skills, vấn đề này tự giải tỏa — Footer giờ chỉ còn là dòng copyright.
 
 - `public/next.svg`, `vercel.svg`, `file.svg`, `globe.svg`, `window.svg` là asset mặc định
   của `create-next-app`, hiện không dùng tới.

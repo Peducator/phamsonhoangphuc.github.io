@@ -6,6 +6,8 @@ Landing page portfolio — Next.js 16 (App Router, TypeScript) + Ant Design 6, d
 |---|---|---|
 | `frontend/` | Landing page portfolio. Chi tiết: `frontend/README.md` | `npm run dev` → port 3000 |
 
+Yêu cầu **Node ≥ 20.9** (Next 16 chặn Node 18); máy này dùng Node 20 trong nvm — xem `frontend/README.md` mục 7.
+
 ---
 
 ## Cấu trúc file
@@ -17,11 +19,12 @@ Landing page portfolio — Next.js 16 (App Router, TypeScript) + Ant Design 6, d
 │
 └── frontend/                        ===== NEXT.JS 16 + ANT DESIGN 6 =====
     ├── package.json                 Scripts + deps (next, antd, @ant-design/icons, react-icons)
-    ├── next.config.ts               Cấu hình Next.js
+    ├── package-lock.json            Lockfile — cần cho `npm ci` (CI/deploy)
+    ├── next.config.ts               Cấu hình Next.js: output "export" + basePath cho GitHub Pages
     ├── tsconfig.json                Cấu hình TypeScript + alias "@/..."
     ├── eslint.config.mjs            Cấu hình ESLint
     ├── next-env.d.ts                Type do Next sinh ra (không sửa tay)
-    ├── README.md                    Tài liệu layout: lắp trang, breakpoint, ràng buộc antd 6
+    ├── README.md                    Tài liệu layout: lắp trang, breakpoint, ràng buộc antd 6, deploy
     ├── public/                      File tĩnh served tại "/" (ảnh nhân vật, cv.pdf đặt ở đây)
     └── src/
         ├── theme.ts                 NGUỒN MÀU DUY NHẤT của cả trang: palette + theme token antd.
@@ -48,3 +51,15 @@ Landing page portfolio — Next.js 16 (App Router, TypeScript) + Ant Design 6, d
 
 Frontend hiện dùng dữ liệu tĩnh khai trực tiếp trong component. Khi cần dữ liệu động
 (blog, projects...), có thể thêm API route trong `frontend/src/app/api/` của chính Next.js.
+
+---
+
+## Deploy
+
+Site sống tại **https://peducator.github.io/personal_site/** (GitHub Pages project site,
+nên mọi URL có prefix `/personal_site/`).
+
+- Workflow `.github/workflows/deploy-pages.yml`: mỗi push lên `master` → build trong
+  `frontend/` với `NEXT_PUBLIC_BASE_PATH=/personal_site` → upload `frontend/out` → deploy.
+- Bật lần đầu (làm tay trên GitHub): **Settings → Pages → Source: GitHub Actions**.
+- Chi tiết kỹ thuật basePath: `frontend/README.md` mục 8.

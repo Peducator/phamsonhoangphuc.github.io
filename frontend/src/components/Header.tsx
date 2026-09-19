@@ -9,6 +9,9 @@ import { ExportOutlined, MenuOutlined } from "@ant-design/icons";
 import Container from "./Container";
 import { palette } from "@/theme";
 
+// GitHub Pages project site serving dưới /<repo>/ — link tuyệt đối phải nối basePath
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 const NAV_LINKS = [
   { key: "home", label: "Home", href: "/" },
   { key: "about", label: "About", href: "/#about" },
@@ -74,7 +77,7 @@ export default function Header() {
           {/* LOGO — luôn hiển thị, căn trái ở mọi breakpoint */}
           <Col flex="none">
             <Link
-              href="/"
+              href={`${BASE}/`}
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -122,7 +125,7 @@ export default function Header() {
             <Button
               type="primary"
               shape="round"
-              href="/#contact"
+              href={`${BASE}/#contact`}
               icon={<ExportOutlined />}
               iconPlacement="end" // antd 6: `iconPosition` đã bị deprecate
             >
@@ -162,7 +165,7 @@ export default function Header() {
             type="primary"
             block
             size="large"
-            href="/#contact"
+            href={`${BASE}/#contact`}
             icon={<ExportOutlined />}
             iconPlacement="end"
             onClick={() => setDrawerOpen(false)}

@@ -226,20 +226,20 @@ như khi chạy `next dev`.
 
 ## 8. Deploy GitHub Pages
 
-Site sống tại **https://phamsonhoangphuc.github.io/** — user site (repo tên
-`phamsonhoangphuc.github.io` trên tài khoản GitHub trùng tên), phục vụ ở **gốc domain**,
-nên build không cần basePath.
+Site sống tại **https://peducator.github.io/phamsonhoangphuc.github.io/** — project site:
+account là `Peducator` (khác tên repo) nên Pages phục vụ dưới path tên repo, kể cả khi
+repo có đuôi `.github.io`. Vì vậy build **bắt buộc** có basePath `/phamsonhoangphuc.github.io`.
 
 - `next.config.ts` — `output: "export"`; `basePath` đọc từ env `NEXT_PUBLIC_BASE_PATH`
-  (user site: để rỗng. Nếu sau này host dưới path — project site — build với
-  `NEXT_PUBLIC_BASE_PATH=/<path>`).
+  (workflow CI truyền `/phamsonhoangphuc.github.io`).
 - Link `<a>` thuần của antd (logo, 2 nút CTA, Download CV) nối hằng
-  `BASE = process.env.NEXT_PUBLIC_BASE_PATH` — rỗng thì ra `/...` như thường, có prefix
-  thì tự đúng; `Link`/`Image` của Next tự xử lý basePath.
+  `BASE = process.env.NEXT_PUBLIC_BASE_PATH`; `Link`/`Image` của Next tự xử lý basePath.
 - Workflow `.github/workflows/deploy-pages.yml` chạy `npm ci` + `npm run build`
   trong `frontend/` (cần `package-lock.json` cho `npm ci`), upload `frontend/out`.
 - Bật deploy lần đầu (làm tay trên GitHub): **Settings → Pages → Source: GitHub
   Actions**. Từ đó mỗi push lên `master` là tự build và deploy.
+- Kiểm tra cục bộ: `NEXT_PUBLIC_BASE_PATH=/phamsonhoangphuc.github.io npm run build`
+  rồi xem `out/index.html`.
 
 ---
 

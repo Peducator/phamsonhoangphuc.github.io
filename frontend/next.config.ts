@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
-// Hosting: user site (repo <account>.github.io) phục vụ ở gốc domain → basePath rỗng.
-// Nếu sau này host dưới path (project site), build với NEXT_PUBLIC_BASE_PATH=/<path>:
-// mọi URL sinh ra và các link <a> nối hằng BASE sẽ tự đúng theo.
+// Hosting: GitHub Pages project site (account "Peducator") phục vụ dưới path tên repo
+// → CI build với NEXT_PUBLIC_BASE_PATH=/phamsonhoangphuc.github.io. Mọi URL sinh ra
+// và các link <a> nối hằng BASE sẽ tự đúng theo.
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const nextConfig: NextConfig = {

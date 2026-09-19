@@ -56,12 +56,12 @@ Frontend hiện dùng dữ liệu tĩnh khai trực tiếp trong component. Khi 
 
 ## Deploy
 
-Site sống tại **https://phamsonhoangphuc.github.io/** — user site (repo tên
-`phamsonhoangphuc.github.io` trên tài khoản GitHub trùng tên → phục vụ ở gốc domain,
-không cần basePath).
+Site sống tại **https://peducator.github.io/phamsonhoangphuc.github.io/** — project site
+(account là `Peducator`, khác tên repo nên Pages phục vụ dưới path tên repo, kể cả khi
+repo có đuôi `.github.io` — chỉ tài khoản trùng tên mới được root domain).
 
 - Workflow `.github/workflows/deploy-pages.yml`: mỗi push lên `master` → build trong
-  `frontend/` → upload `frontend/out` → deploy.
+  `frontend/` với `NEXT_PUBLIC_BASE_PATH=/phamsonhoangphuc.github.io` → upload
+  `frontend/out` → deploy.
 - Bật lần đầu (làm tay trên GitHub): **Settings → Pages → Source: GitHub Actions**.
-- Nếu sau này host dưới path (project site), build với `NEXT_PUBLIC_BASE_PATH=/<path>`
-  — chi tiết kỹ thuật basePath: `frontend/README.md` mục 8.
+- Chi tiết kỹ thuật basePath: `frontend/README.md` mục 8.

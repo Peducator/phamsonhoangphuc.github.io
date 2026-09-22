@@ -31,11 +31,12 @@ import {
 } from "react-icons/si";
 import Container from "./Container";
 import SkillBar, { type Skill } from "./SkillBar";
+import Counter from "./Counter";
 import { palette } from "@/theme";
 
 /* ============================================================
    Section "About Me + Skills" — tông màu lấy từ theme của trang
-   (src/theme.ts): nền #0b0f19, card #0f1626, nhấn cyan #22d3ee.
+   (src/theme.ts): nền #0b0f19, card #0f1626, nhấn cyan #0070f3.
    Ảnh mẫu có thể sai màu nên tất cả giá trị màu đều lấy từ
    `palette`, không hardcode từ ảnh.
    ============================================================ */
@@ -139,26 +140,6 @@ function StatIcon({ icon: Icon }: { icon: Stat["Icon"] }) {
 }
 
 /* ----- một ô stat trong lưới 2x2 ----- */
-
-function Counter({ value }: { value: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: false, amount: 0.5 });
-  const numValue = parseInt(value, 10);
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (latest) => Math.round(latest));
-
-  useEffect(() => {
-    if (inView && !isNaN(numValue)) {
-      animate(count, numValue, { duration: 2, ease: "easeOut" });
-    } else {
-      count.set(0);
-    }
-  }, [inView, numValue, count]);
-
-  if (isNaN(numValue)) return <span>{value}</span>;
-
-  return <motion.span ref={ref}>{rounded}</motion.span>;
-}
 
 function StatCell({ stat }: { stat: Stat }) {
   return (

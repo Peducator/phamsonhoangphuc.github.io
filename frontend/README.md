@@ -266,3 +266,24 @@ Trang web đã được nâng cấp UI với `framer-motion` để áp dụng c�
 - **3D Hover Card**: Khi di chuột qua 3 thẻ kỹ năng, thẻ sẽ nổi dần lên và tỏa sáng cyan ở viền bóng.
 - **Spring Bounce Icons**: Các icon công nghệ và mạng xã hội sẽ có độ nảy đàn hồi vật lý khi hover.
 - **Typewriter Effect**: Dòng chữ giới thiệu trong Hero xuất hiện từng chữ cái giống như đang gõ phím.
+
+---
+
+## 11. Cấu trúc Component & Khả năng tái sử dụng (Reusability)
+
+Dự án được chia nhỏ thành các Component độc lập để dễ dàng tái sử dụng và mở rộng sau này:
+
+### Các Component Chia Sẻ (Shared Components)
+- `Counter.tsx`: Component đếm số tự động (`useMotionValue` + `animate`) có tích hợp theo dõi vị trí cuộn chuột (`useInView`). Tự động reset và đếm lại khi lướt qua. Bạn có thể import `Counter` vào bất kỳ đâu để làm hiệu ứng đếm số.
+- `Container.tsx`: Wrapper chuẩn hoá `max-width` và `padding` cho mọi section, đảm bảo layout luôn thẳng hàng.
+- `SkillBar.tsx`: Component thanh tiến độ tuỳ chỉnh kết hợp giữa Ant Design `Progress` và CSS tuỳ biến (Glow effect).
+
+### Các Component Giao Diện (Layout/Sections)
+- `Header.tsx`: Thanh điều hướng dính (Sticky) với hiệu ứng trượt kính (Glassmorphism) và menu trượt mượt mà.
+- `Hero.tsx`: Section chính chứa hiệu ứng lơ lửng, stagger text và ảnh chân dung.
+- `AboutSkills.tsx`: Chứa thông tin giới thiệu và các thẻ kỹ năng 3D. Dữ liệu tĩnh như `STATS` và `SKILL_GROUPS` được khai báo rõ ràng, bạn có thể tách ra file `data.ts` riêng nếu danh sách này dài thêm.
+- `TechStack.tsx` & `ContactFooter.tsx`: Các khối thông tin với icon nảy đàn hồi vật lý (Spring bounce).
+
+### Cấu hình chung
+- `theme.ts`: Nguồn chân lý duy nhất (Single Source of Truth) cho toàn bộ màu sắc của web. Chỉ cần đổi mã hex ở file này, toàn bộ UI (từ background, nút bấm, đến shadow phát sáng) sẽ đổi màu theo.
+- `globals.css`: Chỉ chứa CSS reset cơ bản và font-smoothing, không chứa CSS layout (do đã được quản lý bằng antd).

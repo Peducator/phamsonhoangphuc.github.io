@@ -32,15 +32,15 @@ body {
 body {
   min-height: 100%;
   margin: 0;
-  background: #0b0f19;
-  color: #e8ecf4;
+  background: #050914;
+  color: #ffffff;
   font-family: var(--font-geist-sans), Inter, "Segoe UI", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: rgba(34, 211, 238, 0.28);
+  background: rgba(0, 112, 243, 0.28);
 }
 
 /*
@@ -90,8 +90,8 @@ h2 {
 */
 .ant-menu-horizontal .ant-menu-item-selected::after,
 .ant-menu-horizontal .ant-menu-submenu-selected::after {
-  border-bottom-color: #22d3ee !important;
-  box-shadow: 0 0 14px rgba(34, 211, 238, 0.7) !important;
+  border-bottom-color: #0070f3 !important;
+  box-shadow: 0 0 14px rgba(0, 112, 243, 0.7) !important;
 }
 
 /*
@@ -101,5 +101,5 @@ h2 {
   phải ghi đè bằng CSS. Đây là chỗ CSS thuần thứ hai trong dự án (xem README mục 6).
 */
 .skillbar-progress .ant-progress-track {
-  box-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
+  box-shadow: 0 0 8px rgba(0, 112, 243, 0.5);
 }

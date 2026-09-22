@@ -9,6 +9,7 @@ import type { ColProps, MenuProps } from "antd";
 import { ExportOutlined, MenuOutlined } from "@ant-design/icons";
 import AnchorLink, { goToHash, scrollToHash } from "./AnchorLink";
 import Container from "./Container";
+import { motion } from "framer-motion";
 import { palette } from "@/theme";
 
 // GitHub Pages project site phục vụ dưới path tên repo — link tuyệt đối phải nối
@@ -91,14 +92,21 @@ export default function Header() {
   const selectedKeys = pathname === "/" ? ["home"] : [];
 
   return (
-    <Layout.Header
+    <motion.div
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
       style={{
         position: "sticky",
         top: 0,
         zIndex: 50,
-        // Hiệu ứng mờ sau header — antd không có token cho backdrop-filter
-        background: "rgba(11, 15, 25, 0.72)",
-        backdropFilter: "blur(14px)",
+      }}
+    >
+      <Layout.Header
+        style={{
+          // Hiệu ứng mờ sau header — antd không có token cho backdrop-filter
+          background: "rgba(5, 9, 20, 0.72)",
+          backdropFilter: "blur(14px)",
         WebkitBackdropFilter: "blur(14px)",
         // [skill: polish] bo góc đồng tâm: section bên dưới + Card 20 -> header 24
         borderBottomLeftRadius: 24,
@@ -129,7 +137,7 @@ export default function Header() {
                   color: palette.accent,
                   fontSize: 18,
                   fontWeight: 600,
-                  textShadow: "0 0 18px rgba(34, 211, 238, 0.55)",
+                  textShadow: "0 0 18px rgba(0, 112, 243, 0.55)",
                 }}
               >
                 {"</>"}
@@ -234,5 +242,6 @@ export default function Header() {
         />
       </Drawer>
     </Layout.Header>
+    </motion.div>
   );
 }

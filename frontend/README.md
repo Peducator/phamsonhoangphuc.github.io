@@ -253,3 +253,16 @@ repo có đuôi `.github.io`. Vì vậy build **bắt buộc** có basePath `/ph
 
 - `public/next.svg`, `vercel.svg`, `file.svg`, `globe.svg`, `window.svg` là asset mặc định
   của `create-next-app`, hiện không dùng tới.
+
+---
+
+## 10. Animations & Micro-interactions (Mới thêm)
+
+Trang web đã được nâng cấp UI với `framer-motion` để áp dụng các chuẩn thiết kế hiện đại (Design Engineering):
+
+- **Staggered Scroll Reveal**: Các nội dung (Hero, About, Skills, Contact) mờ dần và trượt lên khi lướt tới. Các ô kỹ năng xuất hiện nối tiếp nhau (stagger).
+- **Floating Element**: Hình ảnh nhân vật và vòng hào quang ở trang chủ nhấp nhô lơ lửng liên tục.
+- **Number Counting**: 4 chỉ số ở phần About Me sẽ đếm nhảy số từ 0 lên giá trị thật khi lướt tới.
+- **3D Hover Card**: Khi di chuột qua 3 thẻ kỹ năng, thẻ sẽ nổi dần lên và tỏa sáng cyan ở viền bóng.
+- **Spring Bounce Icons**: Các icon công nghệ và mạng xã hội sẽ có độ nảy đàn hồi vật lý khi hover.
+- **Typewriter Effect**: Dòng chữ giới thiệu trong Hero xuất hiện từng chữ cái giống như đang gõ phím.

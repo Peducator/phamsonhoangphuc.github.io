@@ -5,17 +5,17 @@ import { theme, type ThemeConfig } from "antd";
  * chỉ chuyển từ CSS variable sang nguồn duy nhất là file này.
  */
 export const palette = {
-  bg: "#0b0f19", // nền chính
-  surface: "#0f1626", // nền card / khối nổi
-  elevated: "#111726", // nền drawer / dải section
-  border: "#1e2637",
-  borderStrong: "#2c3750",
-  text: "#e8ecf4",
-  textMuted: "#8d9aae",
-  accent: "#22d3ee", // cyan nhấn (giữ đúng hex cũ)
-  accentHover: "#4ce0f5",
-  accentInk: "#05131a", // chữ trên nền cyan
-  badgeText: "#b9c4d6",
+  bg: "#050914", // Navy cực đậm, mượt và rất sâu
+  surface: "#0e1526", // Xanh navy nhạt hơn một chút cho các khối nổi
+  elevated: "#162035", // Khối nổi bậc 2
+  border: "#283554", // Viền sắc nét, tương phản tốt hơn
+  borderStrong: "#3b4b6e",
+  text: "#ffffff", // Trắng tinh 100% để chữ cực kỳ "rõ nét" (Sharp)
+  textMuted: "#a0aec0", // Xám bạc, sáng hơn bản cũ một chút để dễ đọc
+  accent: "#0070f3", // Vibrant Blue (Xanh Vercel) - Cực kỳ đậm và nổi bật
+  accentHover: "#3291ff",
+  accentInk: "#ffffff",
+  badgeText: "#e2e8f0",
 } as const;
 
 export const antdTheme: ThemeConfig = {
@@ -87,7 +87,7 @@ export const antdTheme: ThemeConfig = {
     Button: {
       primaryColor: palette.accentInk, // chữ tối trên nền cyan (antd mặc định là chữ trắng)
       fontWeight: 600,
-      primaryShadow: "0 10px 30px rgba(34, 211, 238, 0.22)",
+      primaryShadow: "0 10px 30px rgba(0, 112, 243, 0.22)",
       defaultBg: "transparent",
       defaultColor: palette.text,
       defaultBorderColor: palette.borderStrong,
@@ -101,7 +101,7 @@ export const antdTheme: ThemeConfig = {
       titleMarginTop: 0,
     },
     Tag: {
-      defaultBg: "rgba(17, 23, 38, 0.7)",
+      defaultBg: "rgba(22, 32, 53, 0.7)",
       defaultColor: palette.badgeText,
     },
   },

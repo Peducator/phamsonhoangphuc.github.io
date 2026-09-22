@@ -1,18 +1,44 @@
 "use client";
 
 import Image from "next/image";
-import { Button, Col, Flex, Row, Tag, Typography } from "antd";
+import { Button, Col, Row, Tag, Typography } from "antd";
 import { DownloadOutlined, ExportOutlined } from "@ant-design/icons";
 import TechStack from "./TechStack";
 import Container from "./Container";
 import { goToHash } from "./AnchorLink";
 import { palette } from "@/theme";
+import { motion, Variants } from "framer-motion";
 
 const PORTRAIT_FILE = "hero-character.png";
 
 // GitHub Pages project site phục vụ dưới path tên repo — link/asset tuyệt đối phải
 // nối basePath (CI build với NEXT_PUBLIC_BASE_PATH=/phamsonhoangphuc.github.io).
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", duration: 0.6, bounce: 0 } }
+};
+
+const floatAnimation: Variants = {
+  float: {
+    y: ["-3%", "3%"],
+    transition: {
+      duration: 4,
+      repeat: Infinity,
+      repeatType: "reverse",
+      ease: "easeInOut"
+    }
+  }
+};
 
 export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
   return (
@@ -28,7 +54,7 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
           height: 720,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(34,211,238,0.16) 0%, rgba(34,211,238,0.05) 45%, transparent 70%)",
+            "radial-gradient(circle, rgba(0,112,243,0.16) 0%, rgba(0,112,243,0.05) 45%, transparent 70%)",
           pointerEvents: "none",
         }}
       />
@@ -45,29 +71,37 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
           {/* ===== CỘT NỘI DUNG =====
               [responsive] xs/sm = 24 (một cột, nằm trên) — md trở lên = 13/24 như thiết kế desktop */}
           <Col xs={24} sm={24} md={13}>
-            <Flex vertical align="flex-start" gap={26}>
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="show"
+              style={{ display: "flex", flexDirection: "column", gap: 26, alignItems: "flex-start" }}
+            >
               {/* Badge: div + CSS cũ -> antd Tag */}
-              <Tag
-                style={{
-                  margin: 0,
-                  paddingBlock: 8,
-                  paddingInline: 18,
-                  borderRadius: 999,
-                  borderColor: palette.borderStrong,
-                  // [responsive] đúng ràng buộc "không chữ nào dưới 14px"
-                  fontSize: 14,
-                  lineHeight: 1.6,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                }}
-              >
-                Full-Stack Dev | Cloud &amp; Infra
-              </Tag>
+              <motion.div variants={itemVariants}>
+                <Tag
+                  style={{
+                    margin: 0,
+                    paddingBlock: 8,
+                    paddingInline: 18,
+                    borderRadius: 999,
+                    borderColor: palette.borderStrong,
+                    // [responsive] đúng ràng buộc "không chữ nào dưới 14px"
+                    fontSize: 14,
+                    lineHeight: 1.6,
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Full-Stack Dev | Cloud &amp; Infra
+                </Tag>
+              </motion.div>
 
               {/* Tiêu đề: h1 thuần -> Typography.Title
                   [responsive] clamp: mobile 30px -> tablet ~40px -> desktop 49.6px (giữ nguyên,
                   không dùng media query nên không bị nháy khi tải trang) */}
-              <Typography.Title
+              <motion.div variants={itemVariants}>
+                <Typography.Title
                 level={1}
                 style={{
                   fontSize: "clamp(1.875rem, 5.2vw, 3.1rem)",
@@ -86,7 +120,7 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
                     // [skill: polish] glow chữ đồng bộ với vòng tròn neon — trước
                     // đây chỉ là chữ màu, thiếu hiệu ứng nổi
                     textShadow:
-                      "0 0 24px rgba(34, 211, 238, 0.45), 0 0 64px rgba(34, 211, 238, 0.18)",
+                      "0 0 24px rgba(0, 112, 243, 0.45), 0 0 64px rgba(0, 112, 243, 0.18)",
                   }}
                 >
                   Hoang Phuc
@@ -103,21 +137,32 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
                 >
                   I build and deploy things for the web.
                 </span>
-              </Typography.Title>
+                </Typography.Title>
+              </motion.div>
 
               {/* Đoạn mô tả: p thuần -> Typography.Paragraph */}
-              <Typography.Paragraph                  style={{
-                    maxWidth: "32rem",
-                    margin: 0,
-                    fontSize: "clamp(1rem, 1.5vw, 1.06rem)",
-                    lineHeight: 1.65,
-                    color: palette.textMuted,
-                    textWrap: "pretty",
-                  }}
-              >
-                I build and deploy things for the web, and care about the whole
-                path — from a clean interface to the infrastructure it runs on.
-              </Typography.Paragraph>
+              <motion.div variants={itemVariants}>
+                <Typography.Paragraph                  style={{
+                      maxWidth: "32rem",
+                      margin: 0,
+                      fontSize: "clamp(1rem, 1.5vw, 1.06rem)",
+                      lineHeight: 1.65,
+                      color: palette.textMuted,
+                      textWrap: "pretty",
+                    }}
+                >
+                  {"I build and deploy things for the web, and care about the whole path — from a clean interface to the infrastructure it runs on.".split("").map((char, index) => (
+                    <motion.span
+                      key={index}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.1, delay: 0.8 + index * 0.02 }}
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                </Typography.Paragraph>
+              </motion.div>
 
               {/* ===== CTA =====
                   [responsive] Dùng Row/Col của antd thay cho flex-wrap:
@@ -125,37 +170,41 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
                   md = 12/24 -> nằm cạnh nhau từ 768px trở lên (tablet/desktop)
                   Cách này cắt đúng mốc 768px; nếu chỉ dùng flex-basis thì 2 nút vẫn
                   nằm cạnh nhau ở các máy 400-767px. */}
-              <Row gutter={[16, 16]} style={{ width: "100%" }}>
-                <Col xs={24} md={12}>
-                  <Button
-                    type="primary"
-                    size="large"
-                    block
-                    href={`${BASE}/#projects`}
-                    icon={<ExportOutlined />}
-                    iconPlacement="end" // antd 6: `iconPosition` đã bị deprecate
-                    style={{ minHeight: 48, height: "auto", paddingBlock: 13 }}
-                    onClick={(e) => goToHash(e, "#projects")}
-                  >
-                    View My Work
-                  </Button>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Button
-                    size="large"
-                    block
-                    href={`${BASE}/cv.pdf`}
-                    icon={<DownloadOutlined />}
-                    iconPlacement="end"
-                    style={{ minHeight: 48, height: "auto", paddingBlock: 13 }}
-                  >
-                    Download CV
-                  </Button>
-                </Col>
-              </Row>
+              <motion.div variants={itemVariants} style={{ width: "100%" }}>
+                <Row gutter={[16, 16]} style={{ width: "100%" }}>
+                  <Col xs={24} md={12}>
+                    <Button
+                      type="primary"
+                      size="large"
+                      block
+                      href={`${BASE}/#projects`}
+                      icon={<ExportOutlined />}
+                      iconPlacement="end" // antd 6: `iconPosition` đã bị deprecate
+                      style={{ minHeight: 48, height: "auto", paddingBlock: 13 }}
+                      onClick={(e) => goToHash(e, "#projects")}
+                    >
+                      View My Work
+                    </Button>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Button
+                      size="large"
+                      block
+                      href={`${BASE}/cv.pdf`}
+                      icon={<DownloadOutlined />}
+                      iconPlacement="end"
+                      style={{ minHeight: 48, height: "auto", paddingBlock: 13 }}
+                    >
+                      Download CV
+                    </Button>
+                  </Col>
+                </Row>
+              </motion.div>
 
-              <TechStack />
-            </Flex>
+              <motion.div variants={itemVariants}>
+                <TechStack />
+              </motion.div>
+            </motion.div>
           </Col>
 
           {/* ===== CỘT MINH HOẠ =====
@@ -179,36 +228,42 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
               }}
             >
               {/* Vòng tròn glow neon — hiệu ứng antd không hỗ trợ */}
-              <div
+              <motion.div
+                animate="float"
+                variants={floatAnimation}
                 aria-hidden="true"
                 style={{
                   position: "absolute",
                   width: "min(100%, 440px)",
                   aspectRatio: "1",
                   borderRadius: "50%",
-                  border: "2px solid rgba(34, 211, 238, 0.85)",
+                  border: "2px solid rgba(0, 112, 243, 0.85)",
                   boxShadow:
-                    "0 0 70px rgba(34,211,238,0.35), inset 0 0 90px rgba(34,211,238,0.14)",
+                    "0 0 70px rgba(0,112,243,0.35), inset 0 0 90px rgba(0,112,243,0.14)",
                 }}
               />
 
               {hasPortrait ? (
-                <Image
-                  src={`/${PORTRAIT_FILE}`}
-                  alt="Illustration of Hoang Phuc working on a laptop"
-                  width={640}
-                  height={640}
-                  priority
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    filter: "drop-shadow(0 30px 50px rgba(0,0,0,0.55))",
-                    position: "relative",
-                    zIndex: 2,
-                  }}
-                />
+                <motion.div animate="float" variants={floatAnimation} style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                  <Image
+                    src={`/${PORTRAIT_FILE}`}
+                    alt="Illustration of Hoang Phuc working on a laptop"
+                    width={640}
+                    height={640}
+                    priority
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      filter: "drop-shadow(0 30px 50px rgba(0,0,0,0.55))",
+                      position: "relative",
+                      zIndex: 2,
+                    }}
+                  />
+                </motion.div>
               ) : (
-                <div
+                <motion.div
+                  animate="float"
+                  variants={floatAnimation}
                   style={{
                     display: "grid",
                     placeItems: "center",
@@ -222,6 +277,8 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
                     color: palette.textMuted,
                     fontSize: 14, // [responsive] không nhỏ hơn 14px
                     lineHeight: 1.6,
+                    position: "relative",
+                    zIndex: 2,
                   }}
                 >
                   <span>
@@ -236,7 +293,7 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
                       public/{PORTRAIT_FILE}
                     </code>
                   </span>
-                </div>
+                </motion.div>
               )}
 
               {/*

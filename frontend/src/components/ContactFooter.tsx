@@ -22,6 +22,7 @@ import { FaLinkedin } from "react-icons/fa"; // SiLinkedin đã bị simple-icon
 import { SiGithub, SiInstagram, SiX } from "react-icons/si";
 import Container from "./Container";
 import { palette } from "@/theme";
+import { motion } from "framer-motion";
 
 /* ============================================================
    Section Contact (#contact) — bố cục 3 cột: CTA / Testimonial / Social.
@@ -68,7 +69,7 @@ function SocialIcon({ label, Icon, href }: Social) {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <a
+    <motion.a
       href={href}
       target="_blank"
       rel="noreferrer"
@@ -76,6 +77,8 @@ function SocialIcon({ label, Icon, href }: Social) {
       title={label}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      whileHover={{ y: -5, scale: 1.15 }}
+      transition={{ type: "spring", stiffness: 400, damping: 10 }}
       style={{
         display: "inline-flex",
         alignItems: "center",
@@ -85,17 +88,17 @@ function SocialIcon({ label, Icon, href }: Social) {
         borderRadius: "50%",
         fontSize: 18,
         color: palette.text,
-        background: hovered ? "rgba(34, 211, 238, 0.12)" : palette.surface,
+        background: hovered ? "rgba(0, 112, 243, 0.12)" : palette.surface,
         border: `1px solid ${
-          hovered ? "rgba(34, 211, 238, 0.55)" : palette.borderStrong
+          hovered ? "rgba(0, 112, 243, 0.55)" : palette.borderStrong
         }`,
-        boxShadow: hovered ? "0 0 16px rgba(34, 211, 238, 0.45)" : "none",
+        boxShadow: hovered ? "0 0 16px rgba(0, 112, 243, 0.45)" : "none",
         transition:
           "background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease",
       }}
     >
       <Icon aria-hidden="true" />
-    </a>
+    </motion.a>
   );
 }
 
@@ -157,7 +160,14 @@ export default function ContactFooter() {
         >
           {/* ================= CỘT 1 — CTA ================= */}
           <Col xs={24} md={8}>
-            <Flex vertical align="flex-start">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5 }}
+              style={{ height: "100%" }}
+            >
+              <Flex vertical align="flex-start">
               <Typography.Text style={LABEL_STYLE}>
                 Let&apos;s Work Together
               </Typography.Text>
@@ -205,22 +215,30 @@ export default function ContactFooter() {
                   minHeight: 48,
                   paddingBlock: 12,
                   paddingInline: 24,
-                  boxShadow: "0 0 20px rgba(34, 211, 238, 0.4)",
+                  boxShadow: "0 0 20px rgba(0, 112, 243, 0.4)",
                 }}
               >
                 Get In Touch
               </Button>
             </Flex>
+            </motion.div>
           </Col>
 
           {/* ================= CỘT 2 — TESTIMONIAL ================= */}
           <Col xs={24} md={8}>
-            <Card
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              style={{ height: "100%" }}
+            >
+              <Card
               variant="outlined" // antd 6: `bordered` đã đổi thành `variant`
               style={{
                 height: "100%",
                 background: palette.surface, // cùng nền với card Skills
-                borderColor: "rgba(34, 211, 238, 0.2)",
+                borderColor: "rgba(0, 112, 243, 0.2)",
                 borderRadius: 16,
               }}
               styles={{
@@ -241,7 +259,7 @@ export default function ContactFooter() {
                   fontSize: 36,
                   lineHeight: 1,
                   fontFamily: "sans-serif",
-                  filter: "drop-shadow(0 0 8px rgba(34, 211, 238, 0.8))",
+                  filter: "drop-shadow(0 0 8px rgba(0, 112, 243, 0.8))",
                 }}
               >
                 {"\u201C"}
@@ -268,7 +286,7 @@ export default function ContactFooter() {
                 <Avatar
                   size={44}
                   style={{
-                    backgroundColor: "rgba(34, 211, 238, 0.14)",
+                    backgroundColor: "rgba(0, 112, 243, 0.14)",
                     color: palette.accent,
                     fontWeight: 600,
                     flex: "0 0 auto",
@@ -288,11 +306,19 @@ export default function ContactFooter() {
                 </Flex>
               </Flex>
             </Card>
+            </motion.div>
           </Col>
 
           {/* ================= CỘT 3 — SOCIAL + LIÊN HỆ ================= */}
           <Col xs={24} md={8}>
-            <Flex vertical align="flex-start" gap={16}>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              style={{ height: "100%" }}
+            >
+              <Flex vertical align="flex-start" gap={16}>
               <Typography.Text style={LABEL_STYLE}>Follow Me</Typography.Text>
 
               <Space size={12} wrap>
@@ -314,6 +340,7 @@ export default function ContactFooter() {
                 />
               </Flex>
             </Flex>
+            </motion.div>
           </Col>
         </Row>
       </Container>

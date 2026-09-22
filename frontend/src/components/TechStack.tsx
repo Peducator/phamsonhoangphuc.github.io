@@ -37,17 +37,16 @@ const TECHNOLOGIES: Tech[] = [
 /** [responsive] glyph co theo bề rộng màn hình, khung bấm vẫn giữ 44px */
 const GLYPH_SIZE = "clamp(26px, 3.4vw, 32px)";
 
-function TechIcon({ label, Icon, color }: Tech) {
-  // Hiệu ứng hover giữ nguyên như bản CSS cũ, nhưng viết bằng state vì đã bỏ file CSS
-  const [hovered, setHovered] = useState(false);
+import { motion } from "framer-motion";
 
+function TechIcon({ label, Icon, color }: Tech) {
   return (
     <Tooltip title={label}>
-      <span
+      <motion.span
         role="img"
         aria-label={label}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        whileHover={{ y: -5, scale: 1.15, filter: "drop-shadow(0 0 12px currentColor)" }}
+        transition={{ type: "spring", stiffness: 400, damping: 10 }}
         style={{
           display: "inline-flex",
           alignItems: "center",
@@ -58,13 +57,10 @@ function TechIcon({ label, Icon, color }: Tech) {
           fontSize: GLYPH_SIZE,
           color,
           cursor: "pointer",
-          transition: "transform 0.18s ease, filter 0.18s ease",
-          transform: hovered ? "translateY(-3px) scale(1.06)" : "none",
-          filter: hovered ? "drop-shadow(0 0 12px currentColor)" : "none",
         }}
       >
         <Icon aria-hidden="true" />
-      </span>
+      </motion.span>
     </Tooltip>
   );
 }

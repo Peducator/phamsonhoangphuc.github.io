@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hoang Phuc — Full-Stack Developer",
+  title: "Phạm Sơn Hoàng Phúc — Full-Stack Developer",
   description:
-    "Portfolio of Hoang Phuc, a full-stack developer building and deploying things for the web, cloud and infra.",
+    "Portfolio of Phạm Sơn Hoàng Phúc, a full-stack developer building and deploying things for the web, cloud and infra.",
 };
 
 export const viewport: Viewport = {

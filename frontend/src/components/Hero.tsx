@@ -124,7 +124,7 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
                       "0 0 24px rgba(0, 112, 243, 0.45), 0 0 64px rgba(0, 112, 243, 0.18)",
                   }}
                 >
-                  Hoang Phuc
+                  Phạm Sơn Hoàng Phúc
                 </span>
                 <br />
                 <span
@@ -249,7 +249,7 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
                 <motion.div animate="float" variants={floatAnimation} style={{ width: "100%", display: "flex", justifyContent: "center" }}>
                   <Image
                     src={`/${PORTRAIT_FILE}`}
-                    alt="Illustration of Hoang Phuc working on a laptop"
+                    alt="Illustration of Phạm Sơn Hoàng Phúc working on a laptop"
                     width={640}
                     height={640}
                     priority

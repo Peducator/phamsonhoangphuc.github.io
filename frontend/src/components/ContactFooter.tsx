@@ -273,7 +273,7 @@ export default function ContactFooter() {
                   lineHeight: 1.6,
                 }}
               >
-                Phuc is a fast, reliable developer who delivers high-quality
+                Phúc is a fast, reliable developer who delivers high-quality
                 work on time. His attention to detail and problem-solving
                 skills are outstanding.
               </Typography.Paragraph>

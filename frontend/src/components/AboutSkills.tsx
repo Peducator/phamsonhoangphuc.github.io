@@ -142,7 +142,7 @@ function StatIcon({ icon: Icon }: { icon: Stat["Icon"] }) {
 
 function Counter({ value }: { value: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.5 });
+  const inView = useInView(ref, { once: false, amount: 0.5 });
   const numValue = parseInt(value, 10);
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest));
@@ -150,6 +150,8 @@ function Counter({ value }: { value: string }) {
   useEffect(() => {
     if (inView && !isNaN(numValue)) {
       animate(count, numValue, { duration: 2, ease: "easeOut" });
+    } else {
+      count.set(0);
     }
   }, [inView, numValue, count]);
 
@@ -228,7 +230,7 @@ export default function AboutSkills() {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: false, amount: 0.3 }}
               transition={{ duration: 0.6 }}
             >
               <Flex vertical align="flex-start" gap={20}>
@@ -288,7 +290,7 @@ export default function AboutSkills() {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: false, amount: 0.3 }}
               transition={{ duration: 0.6 }}
             >
               <Row gutter={[24, 28]} align="stretch">
@@ -324,7 +326,7 @@ export default function AboutSkills() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.8 }}
+          viewport={{ once: false, amount: 0.8 }}
           transition={{ duration: 0.6 }}
         >
           <Flex
@@ -379,7 +381,7 @@ export default function AboutSkills() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 whileHover={{ scale: 1.02, y: -5 }}
-                viewport={{ once: true, amount: 0.3 }}
+                viewport={{ once: false, amount: 0.3 }}
                 transition={{ duration: 0.5, delay: index * 0.15 }}
                 style={{ height: "100%" }}
               >

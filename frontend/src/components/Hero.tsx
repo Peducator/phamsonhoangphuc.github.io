@@ -74,7 +74,8 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
             <motion.div
               variants={containerVariants}
               initial="hidden"
-              animate="show"
+              whileInView="show"
+              viewport={{ once: false, amount: 0.1 }}
               style={{ display: "flex", flexDirection: "column", gap: 26, alignItems: "flex-start" }}
             >
               {/* Badge: div + CSS cũ -> antd Tag */}
@@ -154,9 +155,10 @@ export default function Hero({ hasPortrait }: { hasPortrait: boolean }) {
                   {"I build and deploy things for the web, and care about the whole path — from a clean interface to the infrastructure it runs on.".split("").map((char, index) => (
                     <motion.span
                       key={index}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.1, delay: 0.8 + index * 0.02 }}
+                      variants={{
+                        hidden: { opacity: 0 },
+                        show: { opacity: 1, transition: { duration: 0.1, delay: 0.8 + index * 0.02 } }
+                      }}
                     >
                       {char}
                     </motion.span>
